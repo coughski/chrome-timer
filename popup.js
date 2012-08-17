@@ -147,7 +147,7 @@ function setTimer()
 	//set timer, hide settings, display reset button
 	if(isValid(num))
 	{
-		bgpage.setAlarm(num * 60000 + 500);
+		bgpage.setAlarm(num * 60000);
 		hide("settings");
 		show("modify");
         show("display");
