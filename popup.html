@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="popup.js"></script>
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+
+<style>
+body {width: 230px}
+</style>
+    
+</head>
+
+
+<body>
+<div class="container-fluid">
+<div class="row-fluid">
+
+<!--<h1 id="display"></h1>-->
+    <div id="display" class="progress progress-striped active progress-success progress-large">
+        <div class="bar" id="bar" style="width: 100%;"></div>
+    </div>
+<div id="modify">
+    <button id="cancel" class="btn btn-danger btn-mini"><i class="icon-stop icon-white"></i></button>
+    <button id="resume" class="btn btn-success btn-mini"><i class="icon-play icon-white"></i></button>
+    <button id="pause" class="btn btn-warning btn-mini"><i class="icon-pause icon-white"></i></button>
+    <button id="restart" class="btn btn-mini"><i class="icon-repeat"></i></button>
+</div>
+
+<form class="well" name="choices" id="settings">
+<label class="radio"><input type="radio" name="radio" value="0" checked="checked"/>
+<span id="s0">1</span>&nbsp;min</label>
+
+<label class="radio"><input type="radio" name="radio" value="1"/>
+<span id="s1">5</span>&nbsp;min</label>
+
+<label class="radio"><input type="radio" name="radio" value="2"/>
+<span id="s2">10</span>&nbsp;min</label>
+
+<label class="radio"><input type="radio" name="radio" value="3"/>
+<span id="s3">30</span>&nbsp;min</label>
+
+<button type="button" id="start" class="btn btn-success"><i class="icon-play icon-white"></i></button>
+<div id="swapper" style="float: right"><a href="#" id="wrench" class="btn"><i class="icon-wrench"></i></a></div>
+</form>
+</div>
+</div>
+    
+</body>
+</html>
