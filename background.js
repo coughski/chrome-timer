@@ -1,31 +1,41 @@
 var timeout;
 var interval;
 
-var alarmDate;
 var setDate;
 var pauseDate;
+var alarmDate;
 
 var greenColor = [76, 187, 23, 255];
 var yellowColor = [230, 230, 0, 255];
 var guiLagAdjustment = 500;
 
-function setAlarm(millis)
+function setAlarm(tMillis)
 {	
-	interval = millis;
-	ringIn(interval + guiLagAdjustment);
+	interval = tMillis;
+	ringIn(tMillis + guiLagAdjustment);
 }
 
-function ringIn(millis)
+function ringIn(tMillis)
 {
 	clearTimeout(timeout);
 	pauseDate = null;
-	alarmDate = new Date();
-	alarmDate.setTime(alarmDate.getTime() + millis);
 	
-	var now = new Date();
-	setDate = now;
-	var until = (alarmDate.getTime() - now.getTime());
-	timeout = setTimeout(ring, until);
+	var tSecs = parseInt(tMillis / 1000);
+	var tMins = parseInt(tSecs / 60);
+	var secs = tSecs % 60;
+	var tHrs = parseInt(tMins / 60);
+	var mins = tMins % 60;
+	var millis = tMillis % 1000;
+	
+	alarmDate = new Date();
+	// alarmDate.setTime(alarmDate.getTime() + millis);
+	alarmDate.setHours(alarmDate.getHours() + tHrs);
+	alarmDate.setMinutes(alarmDate.getMinutes() + mins);
+	alarmDate.setSeconds(alarmDate.getSeconds() + secs);
+	alarmDate.setMilliseconds(alarmDate.getMilliseconds() + millis);
+	
+	setDate = new Date();
+	timeout = setTimeout(ring, alarmDate.getTime() - setDate.getTime());
 	
 	chrome.browserAction.setBadgeBackgroundColor({color:greenColor});
 	chrome.browserAction.setBadgeText({text: "on"});
@@ -36,7 +46,7 @@ function pause()
     pauseDate = new Date();
     clearTimeout(timeout);
     chrome.browserAction.setBadgeBackgroundColor({color:yellowColor});
-    chrome.browserAction.setBadgeText({text: "\""});
+    chrome.browserAction.setBadgeText({text: "pause"});
 }
 
 function resume()
@@ -74,7 +84,8 @@ function getTimeLeftString()
 	var mins = tMins % 60;
 	if(secs < 10) secs = "0" + secs;
 	if(mins < 10) mins = "0" + mins;
-	return (mins + ":" + secs);
+	if(tHrs < 10) tHrs = "0" + tHrs;
+	return ((tHrs > 0 ? tHrs + ":" : "") + mins + ":" + secs);
 }
 
 function ring()

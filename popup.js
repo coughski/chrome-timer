@@ -41,10 +41,10 @@ function load()
         hide("pause");
     }
     
-    //if timer off, show settings
+    // if timer off, show settings
 	if(!bgpage.alarmDate)
 	{
-		//LOADS custom times IF they exist
+		// LOADS custom times IF they exist
 		for(var i = 0; i < document.choices.radio.length; i++)
 			if(localStorage[i] != null)
 				document.getElementById("s"+i).textContent = localStorage[i];
@@ -53,7 +53,7 @@ function load()
         hide("display");
 	}
 	
-	//else, show countdown
+	// else, show countdown
 	else
 	{
 		show("display");
@@ -62,17 +62,17 @@ function load()
 	}
 }
 
-function autoSave(fieldNum)
-{
-	var val = document.choices.custom[fieldNum].value;
-	
-	if(isValid(val))
-		localStorage[fieldNum] = val;
-}
+// function autoSave(fieldNum)
+// {
+// 	var val = document.choices.custom[fieldNum].value;
+// 	
+// 	if(isValid(val))
+// 		localStorage[fieldNum] = val;
+// }
 
 function getChoice()
 {
-	//find selected RADIO, RETURN selected value
+	// find selected RADIO, RETURN selected value
 	var num;
 	for(var i = 0; i < document.choices.radio.length; i++)
 	{
@@ -86,7 +86,7 @@ function swap()
 {
 	editing = true;
 	
-	//swap text with fields
+	// swap text with fields
 	for(var i = 0; i < document.choices.radio.length; i++)
 	{
 		var span = document.getElementById("s"+i);
@@ -102,7 +102,7 @@ function swap()
 		span.innerHTML = html;
 	}
     
-	//swap edit button with done button
+	// swap edit button with done button
 	var butt = document.getElementById("swapper");
 	butt.innerHTML = "<a href='#' id='done' class='btn'><i class='icon-ok'></i></a>";
     document.querySelector('#done').addEventListener('click', swapBack);
@@ -110,7 +110,7 @@ function swap()
 
 function swapBack()
 {
-	//swap fields with text
+	// swap fields with text
 	for(var i = 0; i < document.choices.radio.length; i++)
 	{
 		var span = document.getElementById("s"+i);
@@ -125,7 +125,7 @@ function swapBack()
 			span.textContent = previousValues[i];
 	}
 	
-	//swap done button with edit button
+	// swap done button with edit button
 	var butt = document.getElementById("swapper");
 	butt.innerHTML = "<a href='#' id='wrench' class='btn'><i class='icon-wrench'></i></a>";
     document.querySelector('#wrench').addEventListener('click', swap);
@@ -135,16 +135,16 @@ function swapBack()
 
 function setTimer()
 {
-	//make sure we're dealing with text not fields
+	// make sure we're dealing with text not fields
 	if(editing)
 		swapBack();
 	
-	//SET background timer for selected number
-	//HIDE settings, DISPLAY countdown
+	// SET background timer for selected number
+	// HIDE settings, DISPLAY countdown
     
 	var num = getChoice();
 	
-	//set timer, hide settings, display reset button
+	// set timer, hide settings, display reset button
 	if(isValid(num))
 	{
 		bgpage.setAlarm(num * 60000);
@@ -159,7 +159,7 @@ function setTimer()
 
 function isValid(amt)
 {
-	//1 <= amt <= 60
+	// 0 <= amt <= 240
 	
 	if(isNaN(amt) || (amt == null))
 		return false;
