@@ -65,7 +65,7 @@ function load()
 // function autoSave(fieldNum)
 // {
 // 	var val = document.choices.custom[fieldNum].value;
-// 	
+//
 // 	if(isValid(val))
 // 		localStorage[fieldNum] = val;
 // }
@@ -94,10 +94,10 @@ function swap()
 		
 		previousValues[i] = num;
 		
-		var html = "<input type='text' class='input-small' name='custom' id='c"+i;
+		var html = "<div class='input-append'><input class='input-mini' type='text' name='custom' id='c"+i;
 		html += "' value='"+num;
-		//html += "' onClick='this.select();' onChange='autoSave("+i+");'/>";
-		html += "'/>";
+		html += "'><span class='add-on'>min</span></div>";
+		// used to select on click and auto save on change
         
 		span.innerHTML = html;
 	}
@@ -170,7 +170,7 @@ function isValid(amt)
 }
 
 function refreshDisplay()
-{	
+{
     percent = bgpage.getTimeLeftPercent();
     
     if(percent < 15)
