@@ -94,9 +94,9 @@ function swap()
 		
 		previousValues[i] = num;
 		
-		var html = "<div class='input-append'><input class='input-mini' type='text' name='custom' id='c"+i;
+		var html = "<input class='input-mini' type='text' name='custom' id='c"+i;
 		html += "' value='"+num;
-		html += "'><span class='add-on'>min</span></div>";
+		html += "'>";
 		// used to select on click and auto save on change
         
 		span.innerHTML = html;
