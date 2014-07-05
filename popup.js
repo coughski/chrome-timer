@@ -62,14 +62,6 @@ function load()
 	}
 }
 
-// function autoSave(fieldNum)
-// {
-// 	var val = document.choices.custom[fieldNum].value;
-//
-// 	if(isValid(val))
-// 		localStorage[fieldNum] = val;
-// }
-
 function getChoice()
 {
 	// find selected RADIO, RETURN selected value
@@ -157,10 +149,9 @@ function setTimer()
 		bgpage.error();
 }
 
+// Returns true if 0 <= amt <= 240
 function isValid(amt)
 {
-	// 0 <= amt <= 240
-	
 	if(isNaN(amt) || (amt == null))
 		return false;
 	else if((amt < 0) || (amt > 240))

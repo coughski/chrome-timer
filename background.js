@@ -9,6 +9,8 @@ var greenColor = [76, 187, 23, 255];
 var yellowColor = [230, 230, 0, 255];
 var guiLagAdjustment = 500;
 
+var alarmSound = new Audio("chime.mp3");
+
 function setAlarm(tMillis)
 {	
 	interval = tMillis;
@@ -76,7 +78,7 @@ function getTimeLeftPercent()
 
 function getTimeLeftString()
 {
-    var until = getTimeLeft();
+   var until = getTimeLeft();
 	var tSecs = parseInt(until / 1000);
 	var tMins = parseInt(tSecs / 60);
 	var secs = tSecs % 60;
@@ -88,10 +90,20 @@ function getTimeLeftString()
 	return ((tHrs > 0 ? tHrs + ":" : "") + mins + ":" + secs);
 }
 
+function didCreateNotification(notificationId) {}
+
 function ring()
 {
-	var notification = webkitNotifications.createHTMLNotification('done.html');
-	notification.show();
+   var options = {
+      type: "basic",
+      title: "Timer",
+      message: "Time\'s up!",
+      iconUrl: "img/48.png",
+      priority: 2
+   }
+   chrome.notifications.create("", options, didCreateNotification);
+
+   alarmSound.play();
 	turnOff();
 }
 
@@ -100,8 +112,8 @@ function turnOff()
 	clearTimeout(timeout);
 	interval = 0;
 	alarmDate = null;
-    pauseDate = null;
-    setDate = null;
+   pauseDate = null;
+   setDate = null;
 	chrome.browserAction.setBadgeText({text: ""});
 }
 
