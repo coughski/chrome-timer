@@ -35,29 +35,30 @@ function load()
     hide("resume");
     editing = false;
     
+    // if timer is paused, show resume button and hide pause button
     if(bgpage.pauseDate)
     {
         showInline("resume");
         hide("pause");
     }
+   
+	// loads custom times if they exist
+	for(var i = 0; i < document.choices.radio.length; i++)
+		if(localStorage[i] != null)
+			document.getElementById("s"+i).textContent = localStorage[i];
     
-    // if timer off, show settings
+   // if timer is off, show settings
 	if(!bgpage.alarmDate)
 	{
-		// LOADS custom times IF they exist
-		for(var i = 0; i < document.choices.radio.length; i++)
-			if(localStorage[i] != null)
-				document.getElementById("s"+i).textContent = localStorage[i];
-		
 		show("settings");
-        hide("display");
+      hide("display");
 	}
 	
 	// else, show countdown
 	else
 	{
 		show("display");
-        refreshDisplay();
+      refreshDisplay();
 		show("modify");
 	}
 }
@@ -97,7 +98,7 @@ function swap()
 	// swap edit button with done button
 	var butt = document.getElementById("swapper");
 	butt.innerHTML = "<a href='#' id='done' class='btn'><i class='icon-ok'></i></a>";
-    document.querySelector('#done').addEventListener('click', swapBack);
+   document.querySelector('#done').addEventListener('click', swapBack);
 }
 
 function swapBack()
@@ -120,7 +121,7 @@ function swapBack()
 	// swap done button with edit button
 	var butt = document.getElementById("swapper");
 	butt.innerHTML = "<a href='#' id='wrench' class='btn'><i class='icon-wrench'></i></a>";
-    document.querySelector('#wrench').addEventListener('click', swap);
+   document.querySelector('#wrench').addEventListener('click', swap);
 	
 	editing = false;
 }
@@ -142,7 +143,7 @@ function setTimer()
 		bgpage.setAlarm(num * 60000);
 		hide("settings");
 		show("modify");
-        show("display");
+      show("display");
 		refreshDisplay();
 	}
 	else
@@ -162,12 +163,12 @@ function isValid(amt)
 
 function refreshDisplay()
 {
-    percent = bgpage.getTimeLeftPercent();
-    
-    if(percent < 15)
-        document.getElementById("bar").style.color = "grey";
+   percent = bgpage.getTimeLeftPercent();
+   
+   if(percent < 15)
+      document.getElementById("bar").style.color = "grey";
 	document.getElementById("bar").textContent = bgpage.getTimeLeftString();
-    document.getElementById("bar").style.width = percent + "%";
+   document.getElementById("bar").style.width = percent + "%";
     
 	refreshDisplayTimeout = setTimeout(refreshDisplay, 100);
 }
