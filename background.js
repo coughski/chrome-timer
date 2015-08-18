@@ -12,7 +12,7 @@ var guiLagAdjustment = 500;
 var alarmSound = new Audio("chime.mp3");
 
 function setAlarm(tMillis)
-{	
+{
 	interval = tMillis;
 	ringIn(tMillis + guiLagAdjustment);
 }
@@ -21,26 +21,28 @@ function ringIn(tMillis)
 {
 	clearTimeout(timeout);
 	pauseDate = null;
-	
+
 	var tSecs = parseInt(tMillis / 1000);
 	var tMins = parseInt(tSecs / 60);
 	var secs = tSecs % 60;
 	var tHrs = parseInt(tMins / 60);
 	var mins = tMins % 60;
 	var millis = tMillis % 1000;
-	
+
 	alarmDate = new Date();
 	// alarmDate.setTime(alarmDate.getTime() + millis);
 	alarmDate.setHours(alarmDate.getHours() + tHrs);
 	alarmDate.setMinutes(alarmDate.getMinutes() + mins);
 	alarmDate.setSeconds(alarmDate.getSeconds() + secs);
 	alarmDate.setMilliseconds(alarmDate.getMilliseconds() + millis);
-	
+
 	setDate = new Date();
 	timeout = setTimeout(ring, alarmDate.getTime() - setDate.getTime());
-	
+
 	chrome.browserAction.setBadgeBackgroundColor({color:greenColor});
-	chrome.browserAction.setBadgeText({text: "on"});
+	setInterval(function() {
+		chrome.browserAction.setBadgeText({text: getTimeLeftString()});
+	}, 1000);
 }
 
 function pause()
@@ -66,7 +68,7 @@ function getTimeLeft()
 {
     if (pauseDate)
         return (alarmDate.getTime() - pauseDate.getTime());
-    
+
     var now = new Date();
     return (alarmDate.getTime() - now.getTime());
 }
