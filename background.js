@@ -6,7 +6,7 @@ var pauseDate;
 var alarmDate;
 
 var greenColor = [76, 187, 23, 255];
-var yellowColor = [230, 230, 0, 255];
+var yellowColor = [250, 150, 0, 255];
 var guiLagAdjustment = 500;
 
 var alarmSound = new Audio("chime.mp3");
@@ -50,7 +50,6 @@ function pause()
     pauseDate = new Date();
     clearTimeout(timeout);
     chrome.browserAction.setBadgeBackgroundColor({color:yellowColor});
-    chrome.browserAction.setBadgeText({text: "pause"});
 }
 
 function resume()
