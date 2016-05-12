@@ -42,135 +42,135 @@ function load()
         hide("pause");
     }
 
-	// loads custom times if they exist
-	for(var i = 0; i < document.choices.radio.length; i++)
-		if(localStorage[i] != null)
-			document.getElementById("s"+i).textContent = localStorage[i];
+    // loads custom times if they exist
+    for(var i = 0; i < document.choices.radio.length; i++)
+        if(localStorage[i] != null)
+            document.getElementById("s"+i).textContent = localStorage[i];
 
-   // if timer is off, show settings
-	if(!bgpage.alarmDate)
-	{
-		show("settings");
-      hide("display");
-	}
+    // if timer is off, show settings
+    if(!bgpage.alarmDate)
+    {
+        show("settings");
+        hide("display");
+    }
 
-	// else, show countdown
-	else
-	{
-		show("display");
-      refreshDisplay();
-		show("modify");
-	}
+    // else, show countdown
+    else
+    {
+        show("display");
+        refreshDisplay();
+        show("modify");
+    }
 }
 
 function getChoice()
 {
-	// find selected RADIO, RETURN selected value
-	var num;
-	for(var i = 0; i < document.choices.radio.length; i++)
-	{
-		if(document.choices.radio[i].checked == true)
-			num = parseInt(document.getElementById("s"+i).textContent);
-	}
-	return num;
+    // find selected RADIO, RETURN selected value
+    var num;
+    for(var i = 0; i < document.choices.radio.length; i++)
+    {
+        if(document.choices.radio[i].checked == true)
+            num = parseInt(document.getElementById("s"+i).textContent);
+    }
+    return num;
 }
 
 function swap()
 {
-	editing = true;
+    editing = true;
 
-	// swap text with fields
-	for(var i = 0; i < document.choices.radio.length; i++)
-	{
-		var span = document.getElementById("s"+i);
-		var num = parseInt(span.textContent);
+    // swap text with fields
+    for(var i = 0; i < document.choices.radio.length; i++)
+    {
+        var span = document.getElementById("s"+i);
+        var num = parseInt(span.textContent);
 
-		previousValues[i] = num;
+        previousValues[i] = num;
 
-		var html = "<input class='input-mini' type='text' name='custom' id='c"+i;
-		html += "' value='"+num;
-		html += "'>";
-		// used to select on click and auto save on change
+        var html = "<input class='input-mini' type='text' name='custom' id='c"+i;
+        html += "' value='"+num;
+        html += "'>";
+        // used to select on click and auto save on change
 
-		span.innerHTML = html;
-	}
+        span.innerHTML = html;
+    }
 
-	// swap edit button with done button
-	var butt = document.getElementById("swapper");
-	butt.innerHTML = "<a href='#' id='done' class='btn'><i class='icon-ok'></i></a>";
-   document.querySelector('#done').addEventListener('click', swapBack);
+    // swap edit button with done button
+    var butt = document.getElementById("swapper");
+    butt.innerHTML = "<a href='#' id='done' class='btn'><i class='icon-ok'></i></a>";
+    document.querySelector('#done').addEventListener('click', swapBack);
 }
 
 function swapBack()
 {
-	// swap fields with text
-	for(var i = 0; i < document.choices.radio.length; i++)
-	{
-		var span = document.getElementById("s"+i);
-		var num = parseInt(document.getElementById("c"+i).value);
+    // swap fields with text
+    for(var i = 0; i < document.choices.radio.length; i++)
+    {
+        var span = document.getElementById("s"+i);
+        var num = parseInt(document.getElementById("c"+i).value);
 
-		if(isValid(num))
+        if(isValid(num))
         {
             localStorage[i] = num;
             span.textContent = num;
         }
-		else
-			span.textContent = previousValues[i];
-	}
+        else
+            span.textContent = previousValues[i];
+    }
 
-	// swap done button with edit button
-	var butt = document.getElementById("swapper");
-	butt.innerHTML = "<a href='#' id='wrench' class='btn'><i class='icon-wrench'></i></a>";
-   document.querySelector('#wrench').addEventListener('click', swap);
+    // swap done button with edit button
+    var butt = document.getElementById("swapper");
+    butt.innerHTML = "<a href='#' id='wrench' class='btn'><i class='icon-wrench'></i></a>";
+    document.querySelector('#wrench').addEventListener('click', swap);
 
-	editing = false;
+    editing = false;
 }
 
 function setTimer()
 {
-	// make sure we're dealing with text not fields
-	if(editing)
-		swapBack();
+    // make sure we're dealing with text not fields
+    if(editing)
+        swapBack();
 
-	// SET background timer for selected number
-	// HIDE settings, DISPLAY countdown
+    // SET background timer for selected number
+    // HIDE settings, DISPLAY countdown
 
-	var num = getChoice();
+    var num = getChoice();
 
-	// set timer, hide settings, display reset button
-	if(isValid(num))
-	{
-		bgpage.setAlarm(num * 60000);
-		hide("settings");
-		show("modify");
-      show("display");
-		refreshDisplay();
-	}
-	else
-		bgpage.error();
+    // set timer, hide settings, display reset button
+    if(isValid(num))
+    {
+        bgpage.setAlarm(num * 60000);
+        hide("settings");
+        show("modify");
+        show("display");
+        refreshDisplay();
+    }
+    else
+        bgpage.error();
 }
 
 // Returns true if 0 <= amt <= 240
 function isValid(amt)
 {
-	if(isNaN(amt) || (amt == null))
-		return false;
-	else if((amt < 0) || (amt > 240))
-		return false;
-	else
-		return true;
+    if(isNaN(amt) || (amt == null))
+        return false;
+    else if((amt < 0) || (amt > 240))
+        return false;
+    else
+        return true;
 }
 
 function refreshDisplay()
 {
-   percent = bgpage.getTimeLeftPercent();
+    percent = bgpage.getTimeLeftPercent();
 
-   if(percent < 15)
-      document.getElementById("bar").style.color = "grey";
-	document.getElementById("bar").textContent = bgpage.getTimeLeftString();
-   document.getElementById("bar").style.width = percent + "%";
+    if(percent < 15)
+        document.getElementById("bar").style.color = "grey";
+    document.getElementById("bar").textContent = bgpage.getTimeLeftString();
+    document.getElementById("bar").style.width = percent + "%";
 
-	refreshDisplayTimeout = setTimeout(refreshDisplay, 100);
+    refreshDisplayTimeout = setTimeout(refreshDisplay, 100);
 }
 
 function pauseTimer()
@@ -199,9 +199,9 @@ function restartTimer()
 
 function reset()
 {
-	clearTimeout(refreshDisplayTimeout);
-	bgpage.turnOff();
-	hide("display");
-	show("settings");
-	hide("modify");
+    clearTimeout(refreshDisplayTimeout);
+    bgpage.turnOff();
+    hide("display");
+    show("settings");
+    hide("modify");
 }

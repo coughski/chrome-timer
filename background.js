@@ -13,36 +13,36 @@ var alarmSound = new Audio("chime.mp3");
 
 function setAlarm(tMillis)
 {
-	interval = tMillis;
-	ringIn(tMillis + guiLagAdjustment);
+    interval = tMillis;
+    ringIn(tMillis + guiLagAdjustment);
 }
 
 function ringIn(tMillis)
 {
-	clearTimeout(timeout);
-	pauseDate = null;
+    clearTimeout(timeout);
+    pauseDate = null;
 
-	var tSecs = parseInt(tMillis / 1000);
-	var tMins = parseInt(tSecs / 60);
-	var secs = tSecs % 60;
-	var tHrs = parseInt(tMins / 60);
-	var mins = tMins % 60;
-	var millis = tMillis % 1000;
+    var tSecs = parseInt(tMillis / 1000);
+    var tMins = parseInt(tSecs / 60);
+    var secs = tSecs % 60;
+    var tHrs = parseInt(tMins / 60);
+    var mins = tMins % 60;
+    var millis = tMillis % 1000;
 
-	alarmDate = new Date();
-	// alarmDate.setTime(alarmDate.getTime() + millis);
-	alarmDate.setHours(alarmDate.getHours() + tHrs);
-	alarmDate.setMinutes(alarmDate.getMinutes() + mins);
-	alarmDate.setSeconds(alarmDate.getSeconds() + secs);
-	alarmDate.setMilliseconds(alarmDate.getMilliseconds() + millis);
+    alarmDate = new Date();
+    // alarmDate.setTime(alarmDate.getTime() + millis);
+    alarmDate.setHours(alarmDate.getHours() + tHrs);
+    alarmDate.setMinutes(alarmDate.getMinutes() + mins);
+    alarmDate.setSeconds(alarmDate.getSeconds() + secs);
+    alarmDate.setMilliseconds(alarmDate.getMilliseconds() + millis);
 
-	setDate = new Date();
-	timeout = setTimeout(ring, alarmDate.getTime() - setDate.getTime());
+    setDate = new Date();
+    timeout = setTimeout(ring, alarmDate.getTime() - setDate.getTime());
 
-	chrome.browserAction.setBadgeBackgroundColor({color:greenColor});
-	setInterval(function() {
-		chrome.browserAction.setBadgeText({text: getTimeLeftString()});
-	}, 1000);
+    chrome.browserAction.setBadgeBackgroundColor({color:greenColor});
+    setInterval(function() {
+        chrome.browserAction.setBadgeText({text: getTimeLeftString()});
+    }, 1000);
 }
 
 function pause()
@@ -79,46 +79,46 @@ function getTimeLeftPercent()
 
 function getTimeLeftString()
 {
-   var until = getTimeLeft();
-	var tSecs = parseInt(until / 1000);
-	var tMins = parseInt(tSecs / 60);
-	var secs = tSecs % 60;
-	var tHrs = parseInt(tMins / 60);
-	var mins = tMins % 60;
-	if(secs < 10) secs = "0" + secs;
-	if(mins < 10) mins = "0" + mins;
-	if(tHrs < 10) tHrs = "0" + tHrs;
-	return ((tHrs > 0 ? tHrs + ":" : "") + mins + ":" + secs);
+    var until = getTimeLeft();
+    var tSecs = parseInt(until / 1000);
+    var tMins = parseInt(tSecs / 60);
+    var secs = tSecs % 60;
+    var tHrs = parseInt(tMins / 60);
+    var mins = tMins % 60;
+    if(secs < 10) secs = "0" + secs;
+    if(mins < 10) mins = "0" + mins;
+    if(tHrs < 10) tHrs = "0" + tHrs;
+    return ((tHrs > 0 ? tHrs + ":" : "") + mins + ":" + secs);
 }
 
 function didCreateNotification(notificationId) {}
 
 function ring()
 {
-   var options = {
-      type: "basic",
-      title: "Timer",
-      message: "Time\'s up!",
-      iconUrl: "img/48.png",
-      priority: 2
-   }
-   chrome.notifications.create("", options, didCreateNotification);
+    var options = {
+        type: "basic",
+        title: "Timer",
+        message: "Time\'s up!",
+        iconUrl: "img/48.png",
+        priority: 2
+    }
+    chrome.notifications.create("", options, didCreateNotification);
 
-   alarmSound.play();
-	turnOff();
+    alarmSound.play();
+    turnOff();
 }
 
 function turnOff()
 {
-	clearTimeout(timeout);
-	interval = 0;
-	alarmDate = null;
-   pauseDate = null;
-   setDate = null;
-	chrome.browserAction.setBadgeText({text: ""});
+    clearTimeout(timeout);
+    interval = 0;
+    alarmDate = null;
+    pauseDate = null;
+    setDate = null;
+    chrome.browserAction.setBadgeText({text: ""});
 }
 
 function error()
 {
-	alert("Please enter a number between 1 and 240.");
+    alert("Please enter a number between 1 and 240.");
 }
