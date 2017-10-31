@@ -9,6 +9,7 @@
 body {min-width: 240px;}
 #display, #settings {margin-top: 4px;}
 #modify {margin-bottom: 4px;}
+#settings hr {margin-top: 8px; margin-bottom: 8px;}
 </style>
 
 </head>
@@ -37,17 +38,32 @@ body {min-width: 240px;}
     <div id="settings" class="row-fluid">
         <div class="span12">
             <form class="well" name="choices">
-                <div class="radio"><input type="radio" name="radio" value="0" checked="checked">
-                <span id="s0">1</span>&nbsp;min</div>
+                <div class="radio">
+                    <input id="r0" type="radio" name="radio" value="0" checked="checked">
+                    <label for="r0"><span id="s0">1</span>&nbsp;min</label>
+                </div>
 
-                <div class="radio"><input type="radio" name="radio" value="1">
-                <span id="s1">5</span>&nbsp;min</div>
+                <div class="radio">
+                    <input id="r1" type="radio" name="radio" value="1">
+                    <label for="r1"><span id="s1">5</span>&nbsp;min</label>
+                </div>
 
-                <div class="radio"><input type="radio" name="radio" value="2">
-                <span id="s2">10</span>&nbsp;min</div>
+                <div class="radio">
+                    <input id="r2" type="radio" name="radio" value="2">
+                    <label for="r2"><span id="s2">10</span>&nbsp;min</label>
+                </div>
 
-                <div class="radio"><input type="radio" name="radio" value="3">
-                <span id="s3">30</span>&nbsp;min</div>
+                <div class="radio">
+                    <input id="r3" type="radio" name="radio" value="3">
+                    <label for="r3"><span id="s3">30</span>&nbsp;min</label>
+                </div>
+
+                <hr />
+
+                <div id="stopwatch" class="radio">
+                    <input id="chk-stopwatch" type="radio" name="radio">
+                    <label for="chk-stopwatch"><span>Stopwatch</span></label>
+                </div>
 
                 <div>&nbsp;</div>
 

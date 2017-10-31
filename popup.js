@@ -3,10 +3,11 @@ var bgpage = chrome.extension.getBackgroundPage();
 var previousValues = [3, 5, 10, 30];
 var editing = false;
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function ()
+{
     load();
     document.querySelector('#start').addEventListener('click', setTimer);
-    document.querySelector('#cancel').addEventListener('click', reset);
+    document.querySelector('#cancel').addEventListener('click', cancel);
     document.querySelector('#wrench').addEventListener('click', swap);
     document.querySelector('#pause').addEventListener('click', pauseTimer);
     document.querySelector('#resume').addEventListener('click', resumeTimer);
@@ -44,11 +45,11 @@ function load()
 
     // loads custom times if they exist
     for(var i = 0; i < document.choices.radio.length; i++)
-        if(localStorage[i] != null)
+        if(localStorage[i] && isValid(localStorage[i]))
             document.getElementById("s"+i).textContent = localStorage[i];
 
     // if timer is off, show settings
-    if(!bgpage.alarmDate)
+    if(!bgpage.alarmDate && !bgpage.setDate)
     {
         show("settings");
         hide("display");
@@ -69,8 +70,11 @@ function getChoice()
     var num;
     for(var i = 0; i < document.choices.radio.length; i++)
     {
+        var span = document.getElementById("s"+i);
+        if (!span) continue;
+
         if(document.choices.radio[i].checked == true)
-            num = parseInt(document.getElementById("s"+i).textContent);
+            num = parseInt(span.textContent);
     }
     return num;
 }
@@ -83,7 +87,9 @@ function swap()
     for(var i = 0; i < document.choices.radio.length; i++)
     {
         var span = document.getElementById("s"+i);
+        if (!span) continue;
         var num = parseInt(span.textContent);
+
 
         previousValues[i] = num;
 
@@ -107,6 +113,7 @@ function swapBack()
     for(var i = 0; i < document.choices.radio.length; i++)
     {
         var span = document.getElementById("s"+i);
+        if (!span) continue;
         var num = parseInt(document.getElementById("c"+i).value);
 
         if(isValid(num))
@@ -137,10 +144,17 @@ function setTimer()
 
     var num = getChoice();
 
-    // set timer, hide settings, display reset button
-    if(isValid(num))
+    if (isValidChoice())
     {
-        bgpage.setAlarm(num * 60000);
+        // set timer or stopwatch, hide settings, display reset button
+        if(isValid(num))
+        {
+            bgpage.setAlarm(num * 60000);
+        }
+        else if (isStopwatchChecked())
+        {
+            bgpage.startStopwatch(0);
+        }
         hide("settings");
         show("modify");
         show("display");
@@ -148,6 +162,11 @@ function setTimer()
     }
     else
         bgpage.error();
+}
+
+function isValidChoice()
+{
+    return isValid(getChoice()) || isStopwatchChecked();
 }
 
 // Returns true if 0 <= amt <= 240
@@ -163,12 +182,20 @@ function isValid(amt)
 
 function refreshDisplay()
 {
-    percent = bgpage.getTimeLeftPercent();
+    if (bgpage.stopwatchMode)
+    {
+        document.getElementById("bar").textContent = bgpage.getTimePassedString();
+        document.getElementById("bar").style.width = "100%";
+    }
+    else
+    {
+        percent = bgpage.getTimeLeftPercent();
 
-    if(percent < 15)
-        document.getElementById("bar").style.color = "grey";
-    document.getElementById("bar").textContent = bgpage.getTimeLeftString();
-    document.getElementById("bar").style.width = percent + "%";
+        if(percent < 15)
+            document.getElementById("bar").style.color = "grey";
+        document.getElementById("bar").textContent = bgpage.getTimeLeftString();
+        document.getElementById("bar").style.width = percent + "%";
+    }
 
     refreshDisplayTimeout = setTimeout(refreshDisplay, 100);
 }
@@ -197,11 +224,17 @@ function restartTimer()
     bgpage.restart();
 }
 
-function reset()
+function cancel()
 {
     clearTimeout(refreshDisplayTimeout);
     bgpage.turnOff();
     hide("display");
     show("settings");
     hide("modify");
+    bgpage.stopwatchMode = false;
+}
+
+function isStopwatchChecked()
+{
+    return document.getElementById('chk-stopwatch').checked == true;
 }
