@@ -1,15 +1,15 @@
-#Timer for Google Chrome
+# Timer for Google Chrome
 A simple timer in the form of a Google Chrome extension.
 
-##Installation
+## Installation
 Install directly from the [Chrome Webstore](https://chrome.google.com/webstore/detail/timer/hepmlgghomccjinhcnkkikjpgkjibglj).
 
 Or download the source and load it as an unpacked extension
 
-##License
+## License
 Released under the MIT License.
 
-##Credits
+## Credits
 [bootstrap](http://getbootstrap.com)
 
 [Glyphicons](http://glyphicons.com)
